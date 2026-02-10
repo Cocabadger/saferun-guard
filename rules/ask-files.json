@@ -1,0 +1,123 @@
+{
+  "rules": [
+    {
+      "id": "github-workflows",
+      "pattern": "\\.github/workflows/",
+      "match_type": "path_contains",
+      "reason": "GitHub Actions workflow — affects CI/CD pipeline",
+      "category": "ci"
+    },
+    {
+      "id": "gitlab-ci",
+      "pattern": "\\.gitlab-ci\\.yml$",
+      "match_type": "basename",
+      "reason": "GitLab CI config — affects CI/CD pipeline",
+      "category": "ci"
+    },
+    {
+      "id": "jenkinsfile",
+      "pattern": "Jenkinsfile$",
+      "match_type": "basename",
+      "reason": "Jenkins pipeline — affects CI/CD",
+      "category": "ci"
+    },
+    {
+      "id": "dockerfile",
+      "pattern": "Dockerfile",
+      "match_type": "basename",
+      "reason": "Docker build config — affects container images",
+      "category": "infra"
+    },
+    {
+      "id": "docker-compose",
+      "pattern": "(docker-compose\\.ya?ml|compose\\.ya?ml)$",
+      "match_type": "basename",
+      "reason": "Docker Compose config — affects service orchestration",
+      "category": "infra"
+    },
+    {
+      "id": "terraform-files",
+      "pattern": "\\.(tf|tfvars)$",
+      "match_type": "basename",
+      "reason": "Terraform config — modifies infrastructure state",
+      "category": "infra"
+    },
+    {
+      "id": "kubernetes-manifests",
+      "pattern": "(deployment|service|ingress|configmap|secret|statefulset|daemonset)\\.ya?ml$",
+      "match_type": "basename",
+      "reason": "Kubernetes manifest — affects running infrastructure",
+      "category": "infra"
+    },
+    {
+      "id": "ansible-playbooks",
+      "pattern": "(playbook|site|deploy)\\.ya?ml$",
+      "match_type": "basename",
+      "reason": "Ansible playbook — affects server configuration",
+      "category": "infra"
+    },
+    {
+      "id": "sql-files",
+      "pattern": "\\.sql$",
+      "match_type": "basename",
+      "reason": "SQL file — may contain database schema changes or data modifications",
+      "category": "data"
+    },
+    {
+      "id": "migration-files",
+      "pattern": "migrations?/",
+      "match_type": "path_contains",
+      "reason": "Database migration file — modifies schema",
+      "category": "data"
+    },
+    {
+      "id": "codeowners",
+      "pattern": "CODEOWNERS$",
+      "match_type": "basename",
+      "reason": "CODEOWNERS — affects code review requirements",
+      "category": "ci"
+    },
+    {
+      "id": "procfile",
+      "pattern": "Procfile$",
+      "match_type": "basename",
+      "reason": "Procfile — affects deployment process",
+      "category": "deploy"
+    },
+    {
+      "id": "fly-toml",
+      "pattern": "fly\\.toml$",
+      "match_type": "basename",
+      "reason": "Fly.io deployment config",
+      "category": "deploy"
+    },
+    {
+      "id": "vercel-json",
+      "pattern": "vercel\\.json$",
+      "match_type": "basename",
+      "reason": "Vercel deployment config",
+      "category": "deploy"
+    },
+    {
+      "id": "netlify-toml",
+      "pattern": "netlify\\.toml$",
+      "match_type": "basename",
+      "reason": "Netlify deployment config",
+      "category": "deploy"
+    },
+    {
+      "id": "render-yaml",
+      "pattern": "render\\.yaml$",
+      "match_type": "basename",
+      "reason": "Render deployment config",
+      "category": "deploy"
+    },
+    {
+      "id": "heroku-yml",
+      "pattern": "heroku\\.yml$",
+      "match_type": "basename",
+      "reason": "Heroku deployment config",
+      "category": "deploy"
+    }
+  ]
+}

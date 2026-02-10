@@ -1,0 +1,158 @@
+{
+  "rules": [
+    {
+      "id": "env-file",
+      "pattern": "(\\.env|\\.env\\..*)$",
+      "match_type": "basename",
+      "reason": "Environment file may contain secrets and API keys",
+      "category": "credentials"
+    },
+    {
+      "id": "ssh-dir",
+      "pattern": "\\.ssh/",
+      "match_type": "path_contains",
+      "reason": "SSH key directory — may lose access to remote servers",
+      "category": "credentials"
+    },
+    {
+      "id": "private-keys",
+      "pattern": "\\.(pem|key|p12|pfx|jks|keystore)$",
+      "match_type": "basename",
+      "reason": "Private key or certificate file",
+      "category": "credentials"
+    },
+    {
+      "id": "aws-credentials",
+      "pattern": "\\.aws/credentials",
+      "match_type": "path_contains",
+      "reason": "AWS credentials file — cloud access keys",
+      "category": "credentials"
+    },
+    {
+      "id": "gcloud-config",
+      "pattern": "\\.config/gcloud/",
+      "match_type": "path_contains",
+      "reason": "Google Cloud configuration — service account keys",
+      "category": "credentials"
+    },
+    {
+      "id": "kube-config",
+      "pattern": "\\.kube/config",
+      "match_type": "path_contains",
+      "reason": "Kubernetes config — cluster access credentials",
+      "category": "credentials"
+    },
+    {
+      "id": "npmrc",
+      "pattern": "\\.npmrc$",
+      "match_type": "basename",
+      "reason": ".npmrc may contain registry auth tokens",
+      "category": "credentials"
+    },
+    {
+      "id": "pypirc",
+      "pattern": "\\.pypirc$",
+      "match_type": "basename",
+      "reason": ".pypirc contains PyPI upload credentials",
+      "category": "credentials"
+    },
+    {
+      "id": "git-internals",
+      "pattern": "\\.git/",
+      "match_type": "path_contains",
+      "reason": "Git internal files — corrupting these breaks the repository",
+      "category": "git"
+    },
+    {
+      "id": "shell-rc",
+      "pattern": "(\\.bashrc|\\.zshrc|\\.profile|\\.bash_profile|\\.zprofile)$",
+      "match_type": "basename",
+      "reason": "Shell config file — modifying can break user's terminal environment",
+      "category": "system"
+    },
+    {
+      "id": "system-etc",
+      "pattern": "^/etc/",
+      "match_type": "path_prefix",
+      "reason": "System configuration directory — requires root, affects entire system",
+      "category": "system"
+    },
+    {
+      "id": "system-usr",
+      "pattern": "^/usr/",
+      "match_type": "path_prefix",
+      "reason": "System binaries directory — modifying can break OS",
+      "category": "system"
+    },
+    {
+      "id": "system-var",
+      "pattern": "^/var/",
+      "match_type": "path_prefix",
+      "reason": "System variable data directory",
+      "category": "system"
+    },
+    {
+      "id": "system-macos",
+      "pattern": "^/System/",
+      "match_type": "path_prefix",
+      "reason": "macOS system directory — protected by SIP",
+      "category": "system"
+    },
+    {
+      "id": "lockfile-package",
+      "pattern": "package-lock\\.json$",
+      "match_type": "basename",
+      "reason": "npm lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    },
+    {
+      "id": "lockfile-yarn",
+      "pattern": "yarn\\.lock$",
+      "match_type": "basename",
+      "reason": "Yarn lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    },
+    {
+      "id": "lockfile-pnpm",
+      "pattern": "pnpm-lock\\.yaml$",
+      "match_type": "basename",
+      "reason": "pnpm lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    },
+    {
+      "id": "lockfile-pipfile",
+      "pattern": "Pipfile\\.lock$",
+      "match_type": "basename",
+      "reason": "Pipfile lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    },
+    {
+      "id": "lockfile-poetry",
+      "pattern": "poetry\\.lock$",
+      "match_type": "basename",
+      "reason": "Poetry lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    },
+    {
+      "id": "lockfile-composer",
+      "pattern": "composer\\.lock$",
+      "match_type": "basename",
+      "reason": "Composer lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    },
+    {
+      "id": "lockfile-cargo",
+      "pattern": "Cargo\\.lock$",
+      "match_type": "basename",
+      "reason": "Cargo lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    },
+    {
+      "id": "lockfile-gemfile",
+      "pattern": "Gemfile\\.lock$",
+      "match_type": "basename",
+      "reason": "Gemfile lockfile — auto-generated, manual edits break reproducible builds",
+      "category": "lockfile"
+    }
+  ]
+}
