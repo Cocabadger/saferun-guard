@@ -1,0 +1,100 @@
+{
+  "rules": [
+    {
+      "id": "git-merge-protected",
+      "pattern": "\\bgit\\s+merge\\b.*\\b(?:main|master|production|staging|release)\\b",
+      "reason": "Merge to main/production — changes go directly to the production branch",
+      "category": "git"
+    },
+    {
+      "id": "git-push-main",
+      "pattern": "\\bgit\\s+push\\b.*\\b(?:main|master|production)\\b",
+      "reason": "Push to main/production branch — direct production change",
+      "category": "git"
+    },
+    {
+      "id": "git-tag-delete",
+      "pattern": "\\bgit\\s+(?:tag\\s+-d|push\\s+.*--delete\\s+.*tag)",
+      "reason": "Tag deletion — may break release references",
+      "category": "git"
+    },
+    {
+      "id": "kubectl-mutate",
+      "pattern": "\\bkubectl\\s+(?:apply|delete|scale|rollout)\\b",
+      "reason": "Kubernetes operation — affects running infrastructure",
+      "category": "infra"
+    },
+    {
+      "id": "terraform-mutate",
+      "pattern": "\\bterraform\\s+(?:apply|destroy|import)\\b",
+      "reason": "Terraform operation — modifies infrastructure state",
+      "category": "infra"
+    },
+    {
+      "id": "docker-push",
+      "pattern": "\\bdocker\\s+push\\b",
+      "reason": "Docker push — publishes container image to registry",
+      "category": "deploy"
+    },
+    {
+      "id": "npm-publish",
+      "pattern": "\\bnpm\\s+publish\\b",
+      "reason": "npm publish — publishes package to public registry",
+      "category": "deploy"
+    },
+    {
+      "id": "python-upload",
+      "pattern": "\\b(?:pip|twine)\\s+upload\\b",
+      "reason": "Python package upload — publishes to PyPI",
+      "category": "deploy"
+    },
+    {
+      "id": "gem-push",
+      "pattern": "\\bgem\\s+push\\b",
+      "reason": "gem push — publishes Ruby gem to registry",
+      "category": "deploy"
+    },
+    {
+      "id": "cargo-publish",
+      "pattern": "\\bcargo\\s+publish\\b",
+      "reason": "cargo publish — publishes Rust crate to registry",
+      "category": "deploy"
+    },
+    {
+      "id": "db-migration",
+      "pattern": "\\b(?:migrate|alembic|prisma\\s+migrate|knex\\s+migrate|django.*migrate)\\b.*(?:run|deploy|up)\\b",
+      "reason": "Database migration — modifies production database schema",
+      "category": "infra"
+    },
+    {
+      "id": "db-drop",
+      "pattern": "\\b(?:dropdb|drop\\s+database|drop\\s+table)\\b",
+      "reason": "Database drop operation — permanently deletes database or table",
+      "category": "infra"
+    },
+    {
+      "id": "dns-change",
+      "pattern": "\\b(?:cloudflare|aws\\s+route53|gcloud\\s+dns)\\b.*(?:update|delete|create)\\b",
+      "reason": "DNS change — affects domain routing, may cause downtime",
+      "category": "infra"
+    },
+    {
+      "id": "ssh-production",
+      "pattern": "\\bssh\\b.*\\b(?:prod|production|live)\\b",
+      "reason": "SSH to production server — direct access to production environment",
+      "category": "infra"
+    },
+    {
+      "id": "iam-credential-op",
+      "pattern": "\\b(?:aws\\s+iam|gcloud\\s+iam).*(?:create-access-key|rotate|delete)\\b",
+      "reason": "IAM credential operation — may disrupt service access",
+      "category": "credentials"
+    },
+    {
+      "id": "service-management",
+      "pattern": "\\b(?:systemctl\\s+(?:stop|restart|disable)|service\\s+\\S+\\s+(?:stop|restart|disable))\\b",
+      "reason": "Service management — may cause downtime",
+      "category": "infra"
+    }
+  ]
+}

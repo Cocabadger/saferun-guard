@@ -1,0 +1,89 @@
+{
+  "rules": [
+    {
+      "id": "git-readonly",
+      "pattern": "\\bgit\\s+(?:status|log|diff|show|blame|stash\\s+list|remote\\s+-v|branch\\s*$|branch\\s+-[avl])\\b",
+      "category": "git"
+    },
+    {
+      "id": "git-local-ops",
+      "pattern": "\\bgit\\s+(?:add|commit|stash(?:\\s+(?:push|save|pop|apply|drop))?|checkout\\s+-b|switch\\s+-c)\\b",
+      "category": "git"
+    },
+    {
+      "id": "shell-readonly",
+      "pattern": "\\b(?:ls|cat|head|tail|less|more|grep|rg|find|which|whereis|whoami|pwd|echo|printf|wc|sort|uniq|tee|file|stat|du|df|date|env|printenv)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "pkg-install-js",
+      "pattern": "\\b(?:npm|pnpm|yarn|bun)\\s+(?:install|ci|add)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "pkg-install-python",
+      "pattern": "\\b(?:pip|pip3)\\s+install\\b",
+      "category": "shell"
+    },
+    {
+      "id": "pkg-install-brew",
+      "pattern": "\\bbrew\\s+install\\b",
+      "category": "shell"
+    },
+    {
+      "id": "pkg-install-apt",
+      "pattern": "\\b(?:apt|apt-get)\\s+install\\b",
+      "category": "shell"
+    },
+    {
+      "id": "test-runners",
+      "pattern": "\\b(?:pytest|jest|vitest|mocha|cargo\\s+test|go\\s+test|npm\\s+test|pnpm\\s+test|yarn\\s+test)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "linters-formatters",
+      "pattern": "\\b(?:eslint|prettier|black|ruff|flake8|mypy|pylint|rubocop|clippy|rustfmt|gofmt)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "build-js",
+      "pattern": "\\b(?:npm|pnpm|yarn)\\s+(?:run\\s+)?build\\b",
+      "category": "shell"
+    },
+    {
+      "id": "build-native",
+      "pattern": "\\b(?:make|cmake|cargo\\s+build|go\\s+build|tsc|webpack|vite\\s+build)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "dev-servers-js",
+      "pattern": "\\b(?:npm|pnpm|yarn)\\s+(?:run\\s+)?(?:dev|start|serve)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "dev-servers-python",
+      "pattern": "\\bpython\\s+.*(?:manage\\.py\\s+runserver|app\\.py|main\\.py)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "git-fetch-pull-clone",
+      "pattern": "\\bgit\\s+(?:fetch|pull|clone)\\b",
+      "category": "git"
+    },
+    {
+      "id": "git-push-safe",
+      "pattern": "\\bgit\\s+push\\b",
+      "category": "git"
+    },
+    {
+      "id": "directory-nav",
+      "pattern": "\\b(?:cd|mkdir|touch)\\b",
+      "category": "shell"
+    },
+    {
+      "id": "editors",
+      "pattern": "\\b(?:vim|nvim|nano|code|open)\\b",
+      "category": "shell"
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "rules": [
+    {
+      "id": "git-force-push",
+      "pattern": "\\bgit\\s+push\\b.*(?:--force|-f)\\b",
+      "reason": "Force push rewrites remote history — other developers may lose work",
+      "category": "git"
+    },
+    {
+      "id": "git-reset-hard",
+      "pattern": "\\bgit\\s+reset\\s+--hard\\b",
+      "reason": "Reset --hard discards ALL uncommitted changes and rewrites history",
+      "category": "git"
+    },
+    {
+      "id": "git-branch-delete-critical",
+      "pattern": "\\bgit\\s+branch\\s+(?:-[dD]\\s+|-D\\s+|--delete\\s+)(?:main|master|develop|production|staging|release)\\b",
+      "reason": "Deleting a critical branch (main/master/develop/production) — catastrophic for team workflow",
+      "category": "git"
+    },
+    {
+      "id": "git-clean-fd",
+      "pattern": "\\bgit\\s+clean\\b.*-[a-zA-Z]*f[a-zA-Z]*d|git\\s+clean\\b.*-[a-zA-Z]*d[a-zA-Z]*f",
+      "reason": "git clean -fd permanently removes untracked files and directories",
+      "category": "git"
+    },
+    {
+      "id": "git-rebase-protected",
+      "pattern": "\\bgit\\s+rebase\\b.*\\b(?:main|master|production|staging|release)\\b",
+      "reason": "Rebase on a protected branch rewrites shared history — may require force push",
+      "category": "git"
+    },
+    {
+      "id": "git-rebase-interactive",
+      "pattern": "\\bgit\\s+rebase\\s+(?:-i|--interactive)\\b",
+      "reason": "Interactive rebase rewrites commit history — can corrupt shared history",
+      "category": "git"
+    },
+    {
+      "id": "gh-repo-delete",
+      "pattern": "\\bgh\\s+repo\\s+delete\\b",
+      "reason": "Repository deletion is PERMANENT — all code, issues, PRs will be lost forever",
+      "category": "git"
+    },
+    {
+      "id": "rm-rf-critical-paths",
+      "pattern": "\\brm\\s+.*-[a-zA-Z]*r[a-zA-Z]*f.*(?:/\\s*$|/[*]|~|\\$HOME|/etc|/usr|/var|/System)",
+      "reason": "Recursive force delete on critical system path — destroys filesystem",
+      "category": "shell"
+    },
+    {
+      "id": "rm-fr-critical-paths",
+      "pattern": "\\brm\\s+.*-[a-zA-Z]*f[a-zA-Z]*r.*(?:/\\s*$|/[*]|~|\\$HOME|/etc|/usr|/var|/System)",
+      "reason": "Recursive force delete on critical system path — destroys filesystem",
+      "category": "shell"
+    },
+    {
+      "id": "rm-rf-current-dir",
+      "pattern": "\\brm\\s+.*-[a-zA-Z]*r[a-zA-Z]*f\\s+\\.\\s*$",
+      "reason": "Recursive force delete of current directory — destroys all project files",
+      "category": "shell"
+    },
+    {
+      "id": "chmod-777-sensitive",
+      "pattern": "\\bchmod\\s+777\\s+.*(?:/etc|/usr|/var|~|/home|\\$HOME|\\.ssh|\\.env)",
+      "reason": "chmod 777 on sensitive path — opens files to all users, security risk",
+      "category": "shell"
+    },
+    {
+      "id": "curl-pipe-shell",
+      "pattern": "\\bcurl\\b.*[|]\\s*(?:bash|sh|zsh)\\b",
+      "reason": "Piping curl to shell — executes untrusted remote code",
+      "category": "shell"
+    },
+    {
+      "id": "wget-pipe-shell",
+      "pattern": "\\bwget\\b.*[|]\\s*(?:bash|sh|zsh)\\b",
+      "reason": "Piping wget to shell — executes untrusted remote code",
+      "category": "shell"
+    },
+    {
+      "id": "curl-pipe-sudo",
+      "pattern": "\\bcurl\\b.*[|]\\s*sudo\\b",
+      "reason": "Piping curl to sudo — executes untrusted remote code as root",
+      "category": "shell"
+    },
+    {
+      "id": "dd-dev-zero",
+      "pattern": "\\bdd\\s+if=/dev/(?:zero|random|urandom)\\b",
+      "reason": "dd from /dev/zero or /dev/random — can destroy disk data",
+      "category": "shell"
+    },
+    {
+      "id": "mkfs",
+      "pattern": "\\bmkfs\\b",
+      "reason": "mkfs formats a filesystem — destroys all data on the target device",
+      "category": "shell"
+    },
+    {
+      "id": "fork-bomb",
+      "pattern": ":\\(\\)\\s*\\{\\s*:[|]:&\\s*\\}\\s*;?\\s*:",
+      "reason": "Fork bomb — will crash the system by spawning infinite processes",
+      "category": "shell"
+    },
+    {
+      "id": "rm-ssh-keys",
+      "pattern": "\\brm\\b.*(?:~/.ssh|/\\.ssh|id_rsa|id_ed25519|authorized_keys)",
+      "reason": "Deleting SSH keys — will lose access to remote servers",
+      "category": "credentials"
+    },
+    {
+      "id": "rm-env-file",
+      "pattern": "\\brm\\b.*\\.env\\b",
+      "reason": "Deleting .env file — will lose environment secrets and configuration",
+      "category": "credentials"
+    },
+    {
+      "id": "docker-system-prune-all",
+      "pattern": "\\bdocker\\s+system\\s+prune\\s+-a\\b",
+      "reason": "docker system prune -a removes ALL images, containers, and volumes",
+      "category": "infra"
+    },
+    {
+      "id": "write-to-etc",
+      "pattern": "\\b(?:cat|echo|printf)\\b.*>\\s*/etc/",
+      "reason": "Writing to /etc/ — modifies system configuration files",
+      "category": "shell"
+    },
+    {
+      "id": "overwrite-ssh-keys",
+      "pattern": "\\b(?:cat|echo|printf|cp|mv)\\b.*>\\s*~?/?\\.ssh/",
+      "reason": "Overwriting SSH key files — may lose access to remote servers",
+      "category": "credentials"
+    },
+    {
+      "id": "overwrite-lockfile",
+      "pattern": "\\b(?:cat|echo|printf)\\b.*>\\s*(?:package-lock\\.json|yarn\\.lock|pnpm-lock\\.yaml|requirements\\.txt|Pipfile\\.lock)\\b",
+      "reason": "Overwriting lockfile — may break reproducible builds and introduce dependency issues",
+      "category": "shell"
+    }
+  ]
+}
