@@ -1,23 +1,29 @@
 #!/bin/bash
-# audit-log.sh — PostToolUse hook (async)
-# Logs every tool action to ~/.saferun/audit.jsonl
+# audit-log.sh — PostToolUse hook (async, non-blocking)
+# Logs every executed tool action to ~/.saferun/audit.jsonl
 #
-# Sprint 1: stub — logs basic info.
-# Sprint 4: full structured logging with event types.
+# Runs AFTER tool execution. Only logs allowed actions
+# (denied actions never reach PostToolUse).
 
 INPUT=$(cat)
 
-TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // "unknown"')
-SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
-HOOK_EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // "PostToolUse"')
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // "unknown"' 2>/dev/null)
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"' 2>/dev/null)
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty' 2>/dev/null)
 
-# Extract a short summary of the input
+# Extract a short summary of the input (no content — too large)
 case "$TOOL_NAME" in
   Bash)
-    SUMMARY=$(echo "$INPUT" | jq -r '.tool_input.command // empty' | head -c 200)
+    SUMMARY=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null | head -c 200)
     ;;
-  Write|Edit)
-    SUMMARY=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
+  Write)
+    SUMMARY=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
+    ;;
+  Edit)
+    SUMMARY=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
+    ;;
+  Read)
+    SUMMARY=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
     ;;
   *)
     SUMMARY="$TOOL_NAME"
@@ -36,11 +42,8 @@ jq -cn \
   --arg session "$SESSION_ID" \
   --arg tool "$TOOL_NAME" \
   --arg input "$SUMMARY" \
-  --arg decision "allow" \
-  --arg reason "" \
-  --arg type "auto_resolved" \
-  --arg layer "stub" \
-  '{ts: $ts, session: $session, tool: $tool, input: $input, decision: $decision, reason: $reason, type: $type, layer: $layer}' \
+  --arg cwd "$CWD" \
+  '{ts: $ts, session: $session, tool: $tool, input: $input, cwd: $cwd}' \
   >> "$LOG_FILE"
 
 exit 0
