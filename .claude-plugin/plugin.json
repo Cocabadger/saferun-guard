@@ -1,0 +1,11 @@
+{
+  "name": "saferun-guard",
+  "version": "0.1.0",
+  "description": "Runtime safety firewall for AI coding agents. Blocks dangerous commands and protects sensitive files before they execute.",
+  "author": {
+    "name": "saferun",
+    "url": "https://github.com/saferun"
+  },
+  "license": "MIT",
+  "keywords": ["safety", "security", "firewall", "agent", "guardrails"]
+}
