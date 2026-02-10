@@ -31,7 +31,7 @@ mkdir -p "$LOG_DIR"
 
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-jq -n \
+jq -cn \
   --arg ts "$TIMESTAMP" \
   --arg session "$SESSION_ID" \
   --arg tool "$TOOL_NAME" \
