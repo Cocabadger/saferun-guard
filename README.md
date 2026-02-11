@@ -283,6 +283,24 @@ bash tests/test-commands.sh && bash tests/test-files.sh
 
 ---
 
+## Disable or Uninstall
+
+```bash
+# Temporarily disable (keeps installed, can re-enable)
+claude plugin disable saferun-guard@saferun-guard
+
+# Re-enable
+claude plugin enable saferun-guard@saferun-guard
+
+# Update to latest version
+claude plugin update saferun-guard@saferun-guard
+
+# Remove completely
+claude plugin uninstall saferun-guard@saferun-guard
+```
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
