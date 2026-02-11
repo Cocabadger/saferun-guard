@@ -13,8 +13,9 @@ Compound commands like `echo ok && rm -rf /` are split and each segment is check
 ## Quick Start
 
 ```bash
-# Install from GitHub (recommended)
-claude plugin install github:Cocabadger/saferun-guard
+# Add marketplace and install (two commands, one time)
+claude plugin marketplace add Cocabadger/saferun-guard
+claude plugin install saferun-guard@saferun-guard
 ```
 
 That's it. SafeRun Guard is now active for every Claude Code session.
