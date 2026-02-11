@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "description": "Runtime safety firewall for AI coding agents. Blocks dangerous commands and protects sensitive files before they execute.",
   "author": {
-    "name": "saferun",
-    "url": "https://github.com/saferun"
+    "name": "Cocabadger",
+    "url": "https://github.com/Cocabadger"
   },
+  "homepage": "https://github.com/Cocabadger/saferun-guard",
+  "repository": "https://github.com/Cocabadger/saferun-guard",
   "license": "MIT",
-  "keywords": ["safety", "security", "firewall", "agent", "guardrails"]
+  "keywords": ["safety", "security", "firewall", "agent", "guardrails", "hooks"]
 }

@@ -1,0 +1,26 @@
+{
+  "name": "saferun-guard",
+  "owner": {
+    "name": "Cocabadger"
+  },
+  "metadata": {
+    "description": "Runtime safety plugins for AI coding agents"
+  },
+  "plugins": [
+    {
+      "name": "saferun-guard",
+      "source": "./",
+      "description": "Runtime safety firewall for AI coding agents. Blocks dangerous commands and protects sensitive files before they execute.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Cocabadger"
+      },
+      "homepage": "https://github.com/Cocabadger/saferun-guard",
+      "repository": "https://github.com/Cocabadger/saferun-guard",
+      "license": "MIT",
+      "keywords": ["safety", "security", "firewall", "agent", "guardrails", "hooks"],
+      "category": "security",
+      "tags": ["safety", "security", "autonomous-agents", "guardrails"]
+    }
+  ]
+}
