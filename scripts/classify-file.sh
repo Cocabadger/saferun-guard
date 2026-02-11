@@ -81,7 +81,7 @@ if [ -f "$RULES_DIR/scan-content.json" ]; then
     jq -cn --arg reason "🛡️ SafeRun Guard: $SCAN_REASON" '{
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
-        permissionDecision: "ask",
+        permissionDecision: "deny",
         permissionDecisionReason: $reason
       }
     }'

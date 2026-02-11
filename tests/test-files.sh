@@ -261,24 +261,24 @@ echo ""
 echo -e "${YELLOW}--- Content Scanning: Secrets ---${NC}"
 
 # AWS keys
-test_ask "/Users/art/project/config.js" "AWS access key in content" "Write" "const key = 'AKIAIOSFODNN7EXAMPLE';"
-test_ask "/Users/art/project/config.py" "AWS secret key in content" "Write" "aws_secret_access_key = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'"
+test_block "/Users/art/project/config.js" "AWS access key in content" "Write" "const key = 'AKIAIOSFODNN7EXAMPLE';"
+test_block "/Users/art/project/config.py" "AWS secret key in content" "Write" "aws_secret_access_key = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'"
 
 # Private keys
-test_ask "/Users/art/project/setup.sh" "private key in content" "Write" "-----BEGIN RSA PRIVATE KEY-----"
-test_ask "/Users/art/project/cert.txt" "EC private key in content" "Write" "-----BEGIN EC PRIVATE KEY-----"
+test_block "/Users/art/project/setup.sh" "private key in content" "Write" "-----BEGIN RSA PRIVATE KEY-----"
+test_block "/Users/art/project/cert.txt" "EC private key in content" "Write" "-----BEGIN EC PRIVATE KEY-----"
 
 # GitHub tokens
-test_ask "/Users/art/project/deploy.sh" "GitHub token in content" "Write" "export GITHUB_TOKEN=ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmn"
+test_block "/Users/art/project/deploy.sh" "GitHub token in content" "Write" "export GITHUB_TOKEN=ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmn"
 
 # OpenAI/Stripe keys
-test_ask "/Users/art/project/config.ts" "OpenAI key in content" "Write" "const apiKey = 'sk-abcdefghijklmnopqrstuvwxyz1234567890'"
+test_block "/Users/art/project/config.ts" "OpenAI key in content" "Write" "const apiKey = 'sk-abcdefghijklmnopqrstuvwxyz1234567890'"
 
 # Slack tokens
-test_ask "/Users/art/project/slack.js" "Slack token in content" "Write" "const token = 'xoxb-123456789-abcdef'"
+test_block "/Users/art/project/slack.js" "Slack token in content" "Write" "const token = 'xoxb-123456789-abcdef'"
 
 # Connection strings
-test_ask "/Users/art/project/db.py" "DB connection string in content" "Write" "DATABASE_URL=postgres://user:password123@host:5432/db"
+test_block "/Users/art/project/db.py" "DB connection string in content" "Write" "DATABASE_URL=postgres://user:password123@host:5432/db"
 
 # Safe content (no secrets)
 test_allow "/Users/art/project/app.ts" "safe content" "Write" "console.log('hello world');"
