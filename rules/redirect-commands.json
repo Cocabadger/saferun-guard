@@ -1,0 +1,25 @@
+{
+  "rules": [
+    {
+      "id": "git-force-push-redirect",
+      "pattern": "\\bgit\\s+push\\b.*(?:--force\\b|-f\\b)",
+      "safe_pattern": "--force-with-lease",
+      "reason": "Use `git push --force-with-lease` instead — it only overwrites if no one else has pushed since your last fetch",
+      "category": "git"
+    },
+    {
+      "id": "git-clean-redirect",
+      "pattern": "\\bgit\\s+clean\\b.*-[a-zA-Z]*f",
+      "safe_pattern": "(?:-n|--dry-run)",
+      "reason": "Run `git clean -n` first to preview which files would be removed",
+      "category": "git"
+    },
+    {
+      "id": "docker-prune-redirect",
+      "pattern": "\\bdocker\\s+system\\s+prune\\b(?!.*\\s+-a)",
+      "safe_pattern": "--dry-run",
+      "reason": "Run `docker system prune --dry-run` first to preview what would be removed",
+      "category": "infra"
+    }
+  ]
+}

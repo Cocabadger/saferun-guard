@@ -22,11 +22,12 @@ NC='\033[0m'
 run_classify() {
   local tool="$1"
   local file_path="$2"
+  local content="${3:-test}"
   if [ "$tool" = "Write" ]; then
-    jq -n --arg fp "$file_path" '{tool_name:"Write",tool_input:{file_path:$fp,content:"test"}}' \
+    jq -n --arg fp "$file_path" --arg c "$content" '{tool_name:"Write",tool_input:{file_path:$fp,content:$c}}' \
       | CLAUDE_PLUGIN_ROOT="$PLUGIN_ROOT" "$CLASSIFY" 2>/dev/null
   else
-    jq -n --arg fp "$file_path" '{tool_name:"Edit",tool_input:{file_path:$fp,old_string:"old",new_string:"new"}}' \
+    jq -n --arg fp "$file_path" --arg c "$content" '{tool_name:"Edit",tool_input:{file_path:$fp,old_string:"old",new_string:$c}}' \
       | CLAUDE_PLUGIN_ROOT="$PLUGIN_ROOT" "$CLASSIFY" 2>/dev/null
   fi
 }
@@ -35,9 +36,10 @@ test_block() {
   local file_path="$1"
   local desc="$2"
   local tool="${3:-Write}"
+  local content="${4:-test}"
   ((TOTAL++))
 
-  RESULT=$(run_classify "$tool" "$file_path")
+  RESULT=$(run_classify "$tool" "$file_path" "$content")
   DECISION=$(echo "$RESULT" | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
 
   if [ "$DECISION" = "deny" ]; then
@@ -54,9 +56,10 @@ test_ask() {
   local file_path="$1"
   local desc="$2"
   local tool="${3:-Write}"
+  local content="${4:-test}"
   ((TOTAL++))
 
-  RESULT=$(run_classify "$tool" "$file_path")
+  RESULT=$(run_classify "$tool" "$file_path" "$content")
   DECISION=$(echo "$RESULT" | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
 
   if [ "$DECISION" = "ask" ]; then
@@ -73,9 +76,10 @@ test_allow() {
   local file_path="$1"
   local desc="$2"
   local tool="${3:-Write}"
+  local content="${4:-test}"
   ((TOTAL++))
 
-  RESULT=$(run_classify "$tool" "$file_path")
+  RESULT=$(run_classify "$tool" "$file_path" "$content")
   DECISION=$(echo "$RESULT" | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
 
   if [ -z "$DECISION" ]; then
@@ -222,6 +226,63 @@ echo -e "${YELLOW}--- ASK: Edit tool ---${NC}"
 
 test_ask "/Users/art/project/Dockerfile" "Dockerfile (Edit)" "Edit"
 test_ask "/Users/art/project/.github/workflows/ci.yml" "workflow (Edit)" "Edit"
+
+echo ""
+
+# ============================================================
+# 🔴 NEW BLOCK file rules
+# ============================================================
+echo -e "${RED}--- BLOCK: New credential files ---${NC}"
+
+test_block "/Users/art/.docker/config.json" ".docker/config.json"
+test_block "/Users/art/.netrc" ".netrc"
+test_block "/Users/art/.gnupg/pubring.kbx" ".gnupg/ directory"
+test_block "/Users/art/.gnupg/trustdb.gpg" ".gnupg/ trustdb"
+
+echo ""
+
+# ============================================================
+# 🟡 NEW ASK file rules
+# ============================================================
+echo -e "${YELLOW}--- ASK: New infra/CI files ---${NC}"
+
+test_ask "/Users/art/project/nginx.conf" "nginx.conf"
+test_ask "/Users/art/project/.circleci/config.yml" ".circleci/config.yml"
+test_ask "/Users/art/project/serverless.yml" "serverless.yml"
+test_ask "/Users/art/project/serverless.yaml" "serverless.yaml"
+test_ask "/Users/art/project/buildspec.yml" "buildspec.yml"
+test_ask "/Users/art/project/cloudbuild.yaml" "cloudbuild.yaml"
+
+echo ""
+
+# ============================================================
+# 🔐 CONTENT SCANNING tests
+# ============================================================
+echo -e "${YELLOW}--- Content Scanning: Secrets ---${NC}"
+
+# AWS keys
+test_ask "/Users/art/project/config.js" "AWS access key in content" "Write" "const key = 'AKIAIOSFODNN7EXAMPLE';"
+test_ask "/Users/art/project/config.py" "AWS secret key in content" "Write" "aws_secret_access_key = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'"
+
+# Private keys
+test_ask "/Users/art/project/setup.sh" "private key in content" "Write" "-----BEGIN RSA PRIVATE KEY-----"
+test_ask "/Users/art/project/cert.txt" "EC private key in content" "Write" "-----BEGIN EC PRIVATE KEY-----"
+
+# GitHub tokens
+test_ask "/Users/art/project/deploy.sh" "GitHub token in content" "Write" "export GITHUB_TOKEN=ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmn"
+
+# OpenAI/Stripe keys
+test_ask "/Users/art/project/config.ts" "OpenAI key in content" "Write" "const apiKey = 'sk-abcdefghijklmnopqrstuvwxyz1234567890'"
+
+# Slack tokens
+test_ask "/Users/art/project/slack.js" "Slack token in content" "Write" "const token = 'xoxb-123456789-abcdef'"
+
+# Connection strings
+test_ask "/Users/art/project/db.py" "DB connection string in content" "Write" "DATABASE_URL=postgres://user:password123@host:5432/db"
+
+# Safe content (no secrets)
+test_allow "/Users/art/project/app.ts" "safe content" "Write" "console.log('hello world');"
+test_allow "/Users/art/project/utils.py" "safe config content" "Write" "API_URL = 'https://api.example.com'"
 
 echo ""
 

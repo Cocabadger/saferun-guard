@@ -95,6 +95,54 @@
       "pattern": "\\b(?:systemctl\\s+(?:stop|restart|disable)|service\\s+\\S+\\s+(?:stop|restart|disable))\\b",
       "reason": "Service management — may cause downtime",
       "category": "infra"
+    },
+    {
+      "id": "helm-mutate",
+      "pattern": "\\bhelm\\s+(?:install|upgrade|uninstall|rollback)\\b",
+      "reason": "Helm operation — modifies Kubernetes deployments",
+      "category": "infra"
+    },
+    {
+      "id": "pulumi-mutate",
+      "pattern": "\\bpulumi\\s+(?:up|destroy|cancel)\\b",
+      "reason": "Pulumi operation — modifies infrastructure state",
+      "category": "infra"
+    },
+    {
+      "id": "cdk-mutate",
+      "pattern": "\\bcdk\\s+(?:deploy|destroy|bootstrap)\\b",
+      "reason": "AWS CDK operation — modifies cloud infrastructure",
+      "category": "infra"
+    },
+    {
+      "id": "gh-pr-merge",
+      "pattern": "\\bgh\\s+pr\\s+(?:merge|close)\\b",
+      "reason": "GitHub PR operation — merging or closing affects the codebase",
+      "category": "git"
+    },
+    {
+      "id": "gh-release-create",
+      "pattern": "\\bgh\\s+release\\s+(?:create|delete)\\b",
+      "reason": "GitHub release operation — affects published releases",
+      "category": "git"
+    },
+    {
+      "id": "aws-ec2-mutate",
+      "pattern": "\\baws\\s+ec2\\s+(?:run-instances|terminate-instances|stop-instances)\\b",
+      "reason": "AWS EC2 instance operation — affects running infrastructure",
+      "category": "infra"
+    },
+    {
+      "id": "aws-s3-rm",
+      "pattern": "\\baws\\s+s3\\s+(?:rm|rb)\\b",
+      "reason": "AWS S3 delete operation — may permanently remove production data",
+      "category": "infra"
+    },
+    {
+      "id": "ansible-playbook-run",
+      "pattern": "\\bansible-playbook\\b(?!.*(?:--check|--diff|--syntax-check|--list))",
+      "reason": "Ansible playbook execution — modifies server configuration",
+      "category": "infra"
     }
   ]
 }

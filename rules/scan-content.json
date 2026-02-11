@@ -1,0 +1,58 @@
+{
+  "rules": [
+    {
+      "id": "aws-access-key",
+      "pattern": "AKIA[0-9A-Z]{16}",
+      "reason": "AWS Access Key ID detected in file content — use environment variables instead",
+      "category": "credentials"
+    },
+    {
+      "id": "aws-secret-key",
+      "pattern": "(?:aws_secret_access_key|secret_key|AWS_SECRET)\\s*[=:]\\s*['\"]?[A-Za-z0-9/+=]{40}",
+      "reason": "AWS Secret Access Key detected — use environment variables or AWS credentials file",
+      "category": "credentials"
+    },
+    {
+      "id": "private-key-pem",
+      "pattern": "-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----",
+      "reason": "Private key detected in file content — never commit private keys to source code",
+      "category": "credentials"
+    },
+    {
+      "id": "github-token",
+      "pattern": "(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36,255}",
+      "reason": "GitHub token detected in file content — use environment variables instead",
+      "category": "credentials"
+    },
+    {
+      "id": "openai-stripe-key",
+      "pattern": "sk-[A-Za-z0-9]{20,}",
+      "reason": "Secret key (OpenAI/Stripe format) detected — use environment variables instead",
+      "category": "credentials"
+    },
+    {
+      "id": "slack-token",
+      "pattern": "xox[bpras]-[0-9A-Za-z\\-]{10,}",
+      "reason": "Slack token detected in file content — use environment variables instead",
+      "category": "credentials"
+    },
+    {
+      "id": "connection-string-password",
+      "pattern": "(?:mysql|postgres|postgresql|mongodb|redis|amqp)://[^\\s:]+:[^\\s@]+@",
+      "reason": "Database connection string with embedded password — use environment variables instead",
+      "category": "credentials"
+    },
+    {
+      "id": "generic-api-key",
+      "pattern": "(?:api[_-]?key|api[_-]?secret|apikey)\\s*[=:]\\s*['\"]?[A-Za-z0-9_\\-]{20,}",
+      "reason": "API key/secret detected in file content — use environment variables instead",
+      "category": "credentials"
+    },
+    {
+      "id": "hardcoded-password",
+      "pattern": "(?:password|passwd|pwd)\\s*[=:]\\s*['\"][^'\"]{8,}['\"]",
+      "reason": "Hardcoded password detected — use environment variables instead",
+      "category": "credentials"
+    }
+  ]
+}

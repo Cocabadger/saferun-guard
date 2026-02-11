@@ -67,5 +67,27 @@ if [ -n "$ASK_REASON" ]; then
   exit 0
 fi
 
+# --- Content scanning: check for embedded secrets ---
+if [ -f "$RULES_DIR/scan-content.json" ]; then
+  SCAN_REASON=$(echo "$INPUT" | jq -r --slurpfile rules "$RULES_DIR/scan-content.json" '
+    ((.tool_input.content // .tool_input.new_string) // "") as $content |
+    if ($content | length) == 0 then empty
+    else
+      [$rules[0].rules[] | select(.pattern as $p | $content | test($p))][0].reason // empty
+    end
+  ' 2>/dev/null || true)
+
+  if [ -n "$SCAN_REASON" ]; then
+    jq -cn --arg reason "🛡️ SafeRun Guard: $SCAN_REASON" '{
+      hookSpecificOutput: {
+        hookEventName: "PreToolUse",
+        permissionDecision: "ask",
+        permissionDecisionReason: $reason
+      }
+    }'
+    exit 0
+  fi
+fi
+
 # Default: allow
 exit 0

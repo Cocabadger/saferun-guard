@@ -153,6 +153,27 @@
       "match_type": "basename",
       "reason": "Gemfile lockfile — auto-generated, manual edits break reproducible builds",
       "category": "lockfile"
+    },
+    {
+      "id": "docker-config",
+      "pattern": "\\.docker/config\\.json",
+      "match_type": "path_contains",
+      "reason": "Docker config contains registry authentication tokens",
+      "category": "credentials"
+    },
+    {
+      "id": "netrc",
+      "pattern": "\\.netrc$",
+      "match_type": "basename",
+      "reason": ".netrc contains login credentials for remote services",
+      "category": "credentials"
+    },
+    {
+      "id": "gnupg-dir",
+      "pattern": "\\.gnupg/",
+      "match_type": "path_contains",
+      "reason": "GPG keyring directory — contains encryption keys",
+      "category": "credentials"
     }
   ]
 }

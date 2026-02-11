@@ -2,8 +2,8 @@
   "rules": [
     {
       "id": "git-force-push",
-      "pattern": "\\bgit\\s+push\\b.*(?:--force|-f)\\b",
-      "reason": "Force push rewrites remote history — other developers may lose work",
+      "pattern": "\\bgit\\s+push\\b(?!.*--force-with-lease).*(?:--force\\b|-f\\b)",
+      "reason": "Force push rewrites remote history — use `git push --force-with-lease` instead",
       "category": "git"
     },
     {
@@ -136,6 +136,30 @@
       "id": "overwrite-lockfile",
       "pattern": "\\b(?:cat|echo|printf)\\b.*>\\s*(?:package-lock\\.json|yarn\\.lock|pnpm-lock\\.yaml|requirements\\.txt|Pipfile\\.lock)\\b",
       "reason": "Overwriting lockfile — may break reproducible builds and introduce dependency issues",
+      "category": "shell"
+    },
+    {
+      "id": "kubectl-delete-namespace",
+      "pattern": "\\bkubectl\\s+delete\\s+namespace\\b",
+      "reason": "Deleting a Kubernetes namespace destroys ALL resources in it — catastrophic and unrecoverable",
+      "category": "infra"
+    },
+    {
+      "id": "sudo-rm-rf",
+      "pattern": "\\bsudo\\s+rm\\s+.*-[a-zA-Z]*r[a-zA-Z]*f|\\bsudo\\s+rm\\s+.*-[a-zA-Z]*f[a-zA-Z]*r",
+      "reason": "sudo rm -rf — elevated recursive force delete, extremely dangerous",
+      "category": "shell"
+    },
+    {
+      "id": "chmod-recursive-777",
+      "pattern": "\\bchmod\\s+(-R\\s+777|777\\s+-R)\\b",
+      "reason": "chmod -R 777 recursively opens all files to all users — massive security risk",
+      "category": "shell"
+    },
+    {
+      "id": "history-clear",
+      "pattern": "\\bhistory\\s+(?:-c|--clear)\\b",
+      "reason": "Clearing shell history — may be hiding evidence of destructive actions",
       "category": "shell"
     }
   ]

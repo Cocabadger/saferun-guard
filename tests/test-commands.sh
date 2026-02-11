@@ -97,7 +97,7 @@ echo -e "${RED}--- BLOCK rules ---${NC}"
 # Git: Force push
 test_block "git push --force origin main" "git push --force"
 test_block "git push -f origin feature" "git push -f"
-test_block "git push --force-with-lease origin main" "git push --force-with-lease"
+test_ask "git push --force-with-lease origin main" "git push --force-with-lease to main (ask, safe force but production branch)"
 
 # Git: Reset hard
 test_block "git reset --hard HEAD~3" "git reset --hard"
@@ -275,6 +275,109 @@ test_allow "git push origin feature/my-branch" "git push feature branch"
 # Navigation
 test_allow "cd /tmp" "cd"
 test_allow "mkdir -p src/components" "mkdir"
+
+echo ""
+
+# ============================================================
+# 🔀 REDIRECT tests (3 rules)
+# ============================================================
+echo -e "${YELLOW}--- REDIRECT rules ---${NC}"
+
+# Git: force push → redirect to --force-with-lease
+test_block "git push --force origin main" "redirect: git push --force"
+test_block "git push -f origin feature" "redirect: git push -f"
+test_allow "git push --force-with-lease origin feature" "safe: --force-with-lease (non-main)"
+
+# Git: clean → redirect to -n (dry run)
+test_block "git clean -fd" "redirect: git clean -fd"
+test_allow "git clean -n" "safe: git clean -n (dry run)"
+test_allow "git clean --dry-run" "safe: git clean --dry-run"
+
+# Docker: prune → redirect to --dry-run
+test_block "docker system prune" "redirect: docker system prune"
+test_allow "docker system prune --dry-run" "safe: docker system prune --dry-run"
+
+echo ""
+
+# ============================================================
+# 🔗 COMPOUND command tests
+# ============================================================
+echo -e "--- COMPOUND commands ---"
+
+# Dangerous command hidden after safe one
+test_block "echo ok && rm -rf /" "compound: echo && rm -rf /"
+test_block "ls -la; git push --force origin main" "compound: ls; git push --force"
+test_block "echo safe && echo again; rm -rf ~" "compound: multi-chain with rm -rf ~"
+
+# Safe compounds
+test_allow "echo ok && echo safe" "compound: safe && safe"
+test_allow "ls -la && pwd" "compound: ls && pwd"
+test_allow "npm install && npm test" "compound: install && test"
+
+# ASK in compound
+test_ask "echo ok && git push origin main" "compound: echo && git push main"
+test_ask "npm test; terraform apply" "compound: test; terraform apply"
+
+echo ""
+
+# ============================================================
+# 🔴 NEW BLOCK rules
+# ============================================================
+echo -e "${RED}--- NEW BLOCK rules ---${NC}"
+
+# kubectl delete namespace
+test_block "kubectl delete namespace production" "kubectl delete namespace"
+test_block "kubectl delete namespace default" "kubectl delete namespace default"
+
+# sudo rm -rf
+test_block "sudo rm -rf /etc" "sudo rm -rf /etc"
+test_block "sudo rm -rf /var/log" "sudo rm -rf /var/log"
+
+# chmod -R 777
+test_block "chmod -R 777 /var/www" "chmod -R 777"
+test_block "chmod 777 -R /home" "chmod 777 -R"
+
+# history clear
+test_block "history -c" "history -c"
+test_block "history --clear" "history --clear"
+
+echo ""
+
+# ============================================================
+# 🟡 NEW ASK rules
+# ============================================================
+echo -e "${YELLOW}--- NEW ASK rules ---${NC}"
+
+# Helm
+test_ask "helm install my-release bitnami/nginx" "helm install"
+test_ask "helm upgrade my-release chart" "helm upgrade"
+test_ask "helm uninstall my-release" "helm uninstall"
+
+# Pulumi
+test_ask "pulumi up" "pulumi up"
+test_ask "pulumi destroy" "pulumi destroy"
+
+# CDK
+test_ask "cdk deploy" "cdk deploy"
+test_ask "cdk destroy" "cdk destroy"
+
+# GitHub CLI PR/release
+test_ask "gh pr merge 123" "gh pr merge"
+test_ask "gh pr close 456" "gh pr close"
+test_ask "gh release create v1.0.0" "gh release create"
+test_ask "gh release delete v1.0.0" "gh release delete"
+
+# AWS EC2
+test_ask "aws ec2 run-instances --image-id ami-123" "aws ec2 run-instances"
+test_ask "aws ec2 terminate-instances --instance-ids i-123" "aws ec2 terminate-instances"
+
+# AWS S3 delete
+test_ask "aws s3 rm s3://my-bucket/file.txt" "aws s3 rm"
+test_ask "aws s3 rb s3://my-bucket" "aws s3 rb"
+
+# Ansible
+test_ask "ansible-playbook deploy.yml" "ansible-playbook"
+test_allow "ansible-playbook deploy.yml --check" "ansible-playbook --check (safe)"
 
 echo ""
 

@@ -118,6 +118,41 @@
       "match_type": "basename",
       "reason": "Heroku deployment config",
       "category": "deploy"
+    },
+    {
+      "id": "nginx-conf",
+      "pattern": "nginx\\.conf$",
+      "match_type": "basename",
+      "reason": "Nginx configuration — affects web server routing and security",
+      "category": "infra"
+    },
+    {
+      "id": "circleci-config",
+      "pattern": "\\.circleci/",
+      "match_type": "path_contains",
+      "reason": "CircleCI config — affects CI/CD pipeline",
+      "category": "ci"
+    },
+    {
+      "id": "serverless-yml",
+      "pattern": "serverless\\.ya?ml$",
+      "match_type": "basename",
+      "reason": "Serverless Framework config — affects cloud function deployment",
+      "category": "deploy"
+    },
+    {
+      "id": "buildspec-yml",
+      "pattern": "buildspec\\.ya?ml$",
+      "match_type": "basename",
+      "reason": "AWS CodeBuild spec — affects CI/CD pipeline",
+      "category": "ci"
+    },
+    {
+      "id": "cloudbuild-yaml",
+      "pattern": "cloudbuild\\.ya?ml$",
+      "match_type": "basename",
+      "reason": "Google Cloud Build config — affects CI/CD pipeline",
+      "category": "ci"
     }
   ]
 }
