@@ -11,18 +11,46 @@ SafeRun Guard is a Claude Code Plugin that intercepts dangerous commands and fil
 ## Quick Start
 
 ```bash
-# Install from GitHub
+# Install from GitHub (recommended)
 claude plugin install github:Cocabadger/saferun-guard
-
-# Or clone and install locally
-git clone https://github.com/Cocabadger/saferun-guard.git
-claude plugin install ./saferun-guard
-
-# Or just load for one session
-claude --plugin-dir ./saferun-guard
 ```
 
 That's it. SafeRun Guard is now active for every Claude Code session.
+
+### Other install methods
+
+```bash
+# Via marketplace — browse + install
+/plugin marketplace add Cocabadger/saferun-guard
+/plugin install saferun-guard@saferun-guard
+
+# Clone and install locally
+git clone https://github.com/Cocabadger/saferun-guard.git
+claude plugin install ./saferun-guard
+
+# Load for one session only
+claude --plugin-dir ./saferun-guard
+```
+
+### Set up for your team
+
+Add to your project's `.claude/settings.json` so every team member gets prompted to install:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "saferun-guard": {
+      "source": {
+        "source": "github",
+        "repo": "Cocabadger/saferun-guard"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "saferun-guard@saferun-guard": true
+  }
+}
+```
 
 ---
 
@@ -146,7 +174,9 @@ If any script errors (missing jq, corrupt JSON, etc.), the command **passes thro
 
 ```
 saferun-guard/
-├── .claude-plugin/plugin.json     # Plugin manifest
+├── .claude-plugin/
+│   ├── plugin.json                # Plugin manifest
+│   └── marketplace.json           # Marketplace catalog
 ├── hooks/hooks.json               # Hook event → script mapping
 ├── scripts/
 │   ├── classify-command.sh        # PreToolUse: Bash commands
@@ -196,8 +226,10 @@ MIT — see [LICENSE](LICENSE).
 
 ## Links
 
-- [Claude Code Hooks Documentation](https://docs.anthropic.com/en/docs/claude-code/hooks)
-- [Claude Code Plugins Guide](https://docs.anthropic.com/en/docs/claude-code/plugins)
+- [Claude Code Plugins](https://code.claude.com/docs/en/plugins)
+- [Discover Plugins & Marketplaces](https://code.claude.com/docs/en/discover-plugins)
+- [Create a Plugin Marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
+- [Plugins Reference](https://code.claude.com/docs/en/plugins-reference)
 
 ---
 
