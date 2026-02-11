@@ -11,11 +11,15 @@ SafeRun Guard is a Claude Code Plugin that intercepts dangerous commands and fil
 ## Quick Start
 
 ```bash
-# Install from local directory
+# Install from GitHub
+claude plugin install github:Cocabadger/saferun-guard
+
+# Or clone and install locally
+git clone https://github.com/Cocabadger/saferun-guard.git
 claude plugin install ./saferun-guard
 
-# Or from GitHub
-claude plugin install github:saferun/saferun-guard
+# Or just load for one session
+claude --plugin-dir ./saferun-guard
 ```
 
 That's it. SafeRun Guard is now active for every Claude Code session.
@@ -197,4 +201,4 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-Built by [SafeRun](https://github.com/saferun). SafeRun Guard is invisible until it saves your project.
+Built by [SafeRun](https://github.com/Cocabadger/saferun-guard). SafeRun Guard is invisible until it saves your project.
