@@ -167,6 +167,22 @@ CI/CD configs (`.github/workflows/`, `.circleci/`, `buildspec.yml`, `cloudbuild.
 
 ---
 
+## Real-World Examples
+
+### 1. Prevents accidental force push to production
+
+A developer asks Claude to "push my changes." Claude runs `git push --force origin main`. SafeRun Guard intercepts it via the REDIRECT tier and tells Claude: *"Use `git push --force-with-lease` instead — it only overwrites if no one else has pushed since your last fetch."* Claude rewrites the command automatically. No data loss, no broken team history.
+
+### 2. Catches destructive commands hidden in compound chains
+
+Claude runs `echo "cleaning up temp files" && rm -rf . && echo "done"`. SafeRun Guard splits the compound command on `&&`, checks each segment independently, and blocks `rm -rf .` — even though it's sandwiched between two harmless echo commands. Without splitting, this would pass a simple regex check.
+
+### 3. Detects leaked secrets before they're written to disk
+
+Claude generates a config file and includes `AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"` directly in the source code. SafeRun Guard scans file content for 9 secret patterns (AWS keys, private keys, GitHub tokens, API keys) and asks the user before allowing the write. The secret never reaches git history.
+
+---
+
 ## Slash Commands
 
 - `/saferun-guard:status` — show loaded rules count, audit stats, plugin info
