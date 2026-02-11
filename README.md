@@ -44,11 +44,14 @@ Claude wants to run: git push --force origin main
 
 ### Three Decisions
 
-| Decision | What happens | Example |
-|----------|-------------|---------|
-| **BLOCK** | Command denied. Claude sees the reason and adapts. | `git push --force` → "Force push rewrites remote history" |
-| **ASK** | User gets a confirmation prompt. | `git push origin main` → "Push to production branch — allow?" |
-| **ALLOW** | Silent passthrough. No delay, no prompt. | `npm test`, `git status`, `ls -la` |
+- 🚫 **BLOCK** — command denied. Claude sees the reason and adapts.
+  `git push --force` → *"Force push rewrites remote history"*
+
+- ❓ **ASK** — user gets a confirmation prompt.
+  `git push origin main` → *"Push to production branch — allow?"*
+
+- ✅ **ALLOW** — silent passthrough. No delay, no prompt.
+  `npm test`, `git status`, `ls -la`
 
 ---
 
@@ -56,37 +59,31 @@ Claude wants to run: git push --force origin main
 
 ### 🚫 Blocked Commands (23 rules)
 
-| Category | Examples |
-|----------|----------|
-| **Git destructive** | `git push --force`, `git reset --hard`, `git clean -fd`, delete main branch, interactive rebase |
-| **Filesystem** | `rm -rf /`, `rm -rf .`, `chmod 777`, `dd`, `mkfs` |
-| **Code execution** | `curl ... \| bash`, `wget ... \| sh` — remote code execution |
-| **Credentials** | `rm -rf ~/.ssh`, destroy SSH keys, overwrite `/etc/passwd` |
-| **Infrastructure** | `docker system prune -a`, fork bombs |
-| **Lockfiles** | Overwrite `package-lock.json`, `yarn.lock`, `Cargo.lock` via shell |
+- **Git destructive** — `git push --force`, `git reset --hard`, `git clean -fd`, delete main/master branch, interactive rebase
+- **Filesystem** — `rm -rf /`, `rm -rf .`, `chmod 777`, `dd`, `mkfs`
+- **Code execution** — `curl ... | bash`, `wget ... | sh` — remote code execution
+- **Credentials** — `rm -rf ~/.ssh`, destroy SSH keys, overwrite `/etc/passwd`
+- **Infrastructure** — `docker system prune -a`, fork bombs
+- **Lockfiles** — overwrite `package-lock.json`, `yarn.lock`, `Cargo.lock` via shell
 
 ### ❓ Ask User (16 rules)
 
-| Category | Examples |
-|----------|----------|
-| **Git production** | `git push origin main`, `git merge main`, delete tags |
-| **Infrastructure** | `kubectl apply/delete`, `terraform apply/destroy` |
-| **Publishing** | `npm publish`, `pip upload`, `docker push`, `gem push` |
-| **Database** | `db migrate`, `db drop`, SQL execution on prod |
-| **Services** | `systemctl stop`, `service restart` |
+- **Git production** — `git push origin main`, `git merge main`, delete tags
+- **Infrastructure** — `kubectl apply/delete`, `terraform apply/destroy`
+- **Publishing** — `npm publish`, `pip upload`, `docker push`, `gem push`
+- **Database** — `db migrate`, `db drop`, SQL execution on prod
+- **Services** — `systemctl stop`, `service restart`
 
 ### 🚫 Blocked File Writes (22 rules)
 
-| Category | Paths |
-|----------|-------|
-| **Secrets** | `.env`, `.env.*` |
-| **SSH/Keys** | `.ssh/`, `*.pem`, `*.key`, `*.p12` |
-| **Cloud credentials** | `.aws/credentials`, `.config/gcloud/`, `.kube/config` |
-| **Registry tokens** | `.npmrc`, `.pypirc` |
-| **Git internals** | `.git/` (objects, refs, HEAD — not `.gitignore`) |
-| **Shell config** | `.bashrc`, `.zshrc`, `.profile`, `.bash_profile` |
-| **System paths** | `/etc/`, `/usr/`, `/var/`, `/System/` |
-| **Lockfiles** | `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `poetry.lock`, `Cargo.lock`, `Gemfile.lock`, `Pipfile.lock`, `composer.lock` |
+- **Secrets** — `.env`, `.env.*`
+- **SSH/Keys** — `.ssh/`, `*.pem`, `*.key`, `*.p12`
+- **Cloud credentials** — `.aws/credentials`, `.config/gcloud/`, `.kube/config`
+- **Registry tokens** — `.npmrc`, `.pypirc`
+- **Git internals** — `.git/` (objects, refs, HEAD — not `.gitignore`)
+- **Shell config** — `.bashrc`, `.zshrc`, `.profile`, `.bash_profile`
+- **System paths** — `/etc/`, `/usr/`, `/var/`, `/System/`
+- **Lockfiles** — `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `poetry.lock`, `Cargo.lock`, `Gemfile.lock`, `Pipfile.lock`, `composer.lock`
 
 ### ❓ Ask Before Writing (17 rules)
 
@@ -96,10 +93,8 @@ CI/CD configs, Dockerfiles, Terraform (`*.tf`), Kubernetes manifests, Ansible pl
 
 ## Slash Commands
 
-| Command | What it does |
-|---------|-------------|
-| `/saferun-guard:status` | Show loaded rules count, audit stats, plugin info |
-| `/saferun-guard:log` | Show last 20 agent actions from audit log |
+- `/saferun-guard:status` — show loaded rules count, audit stats, plugin info
+- `/saferun-guard:log` — show last 20 agent actions from audit log
 
 ---
 
@@ -130,12 +125,10 @@ Pattern matching uses **jq's Oniguruma regex engine** with case-insensitive matc
 
 ### Performance
 
-| Scenario | Latency |
-|----------|---------|
-| Safe command (no match, worst case) | ~20ms |
-| Blocked command (early match) | ~19ms |
-| Safe file write | ~20ms |
-| Empty/missing input | ~9ms |
+- Safe command (no match, worst case) — **~20ms**
+- Blocked command (early match) — **~19ms**
+- Safe file write — **~20ms**
+- Empty/missing input — **~9ms**
 
 For context: Claude thinks for 2-10 seconds between actions. 20ms is imperceptible.
 
