@@ -24,7 +24,7 @@ if [ -f "$RULES_DIR/block-commands.json" ]; then
     "$RULES_DIR/block-commands.json" 2>/dev/null || true)
 
   if [ -n "$BLOCK_REASON" ]; then
-    jq -cn --arg reason "$BLOCK_REASON" '{
+    jq -cn --arg reason "🛡️ SafeRun Guard: $BLOCK_REASON" '{
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
         permissionDecision: "deny",
@@ -42,7 +42,7 @@ if [ -f "$RULES_DIR/ask-commands.json" ]; then
     "$RULES_DIR/ask-commands.json" 2>/dev/null || true)
 
   if [ -n "$ASK_REASON" ]; then
-    jq -cn --arg reason "$ASK_REASON" '{
+    jq -cn --arg reason "🛡️ SafeRun Guard: $ASK_REASON" '{
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
         permissionDecision: "ask",

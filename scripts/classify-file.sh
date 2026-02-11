@@ -44,7 +44,7 @@ check_file_rules() {
 # Check BLOCK rules — deny
 BLOCK_REASON=$(check_file_rules "$RULES_DIR/block-files.json")
 if [ -n "$BLOCK_REASON" ]; then
-  jq -cn --arg reason "$BLOCK_REASON" '{
+  jq -cn --arg reason "🛡️ SafeRun Guard: $BLOCK_REASON" '{
     hookSpecificOutput: {
       hookEventName: "PreToolUse",
       permissionDecision: "deny",
@@ -57,7 +57,7 @@ fi
 # Check ASK rules — prompt user
 ASK_REASON=$(check_file_rules "$RULES_DIR/ask-files.json")
 if [ -n "$ASK_REASON" ]; then
-  jq -cn --arg reason "$ASK_REASON" '{
+  jq -cn --arg reason "🛡️ SafeRun Guard: $ASK_REASON" '{
     hookSpecificOutput: {
       hookEventName: "PreToolUse",
       permissionDecision: "ask",
